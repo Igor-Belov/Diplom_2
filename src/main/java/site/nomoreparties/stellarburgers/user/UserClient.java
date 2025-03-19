@@ -18,6 +18,15 @@ public class UserClient extends Client {
                 .then().log().all();
     }
 
+    @Step("UserClient - действие, выходим пользователем из личный кабинет")
+    public ValidatableResponse logOut(String creds) {
+        return spec()
+                .body(creds)
+                .when()
+                .post(USER_API_PATH + "/login")
+                .then().log().all();
+    }
+
     @Step("UserClient - действие, запрос на создание пользователя")
     public ValidatableResponse createUser(User user) {
         return spec()

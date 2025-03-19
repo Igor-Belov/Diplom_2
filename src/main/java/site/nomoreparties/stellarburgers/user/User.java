@@ -55,7 +55,7 @@ public class User {
         this.password = this.password + LocalDateTime.now();
     }
 
-    @Step("User - Действие, устанавливаем курьеру новое имя")
+    @Step("User - Действие, устанавливаем пользователю новое имя")
     public void setNewName() {
         this.name = this.name + LocalDateTime.now();
     }
