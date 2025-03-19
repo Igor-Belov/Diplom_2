@@ -52,11 +52,16 @@ public class User {
 
     @Step("User - Действие, устанавливаем пользователю новый пароль")
     public void setNewPassword() {
-        this.password = this.password + LocalDateTime.now();
+        this.password = this.password + "_"+  LocalDateTime.now();
+    }
+
+    @Step("User - Действие, устанавливаем пользователю новый email")
+    public void setNewEmail() {
+        this.email = this.email + "_" + LocalDateTime.now();
     }
 
     @Step("User - Действие, устанавливаем пользователю новое имя")
     public void setNewName() {
-        this.name = this.name + LocalDateTime.now();
+        this.name = this.name + "_"+ LocalDateTime.now();
     }
 }
