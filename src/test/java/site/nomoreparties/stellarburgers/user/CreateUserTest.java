@@ -22,8 +22,8 @@ public class CreateUserTest {
 
     @Before
     public void setUp() {
-        user = user.createRandomUser();
-        userCredentials = userCredentials.extractUserCredentials(user);
+        user = User.createRandomUser();
+        userCredentials = UserCredentials.extractUserCredentials(user);
         check = new UserChecks();
         userClient = new UserClient();
     }
