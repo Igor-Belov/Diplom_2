@@ -68,4 +68,47 @@ public class UserChecks {
                 .body("success", equalTo(false))
                 .body("message", equalTo( "email or password are incorrect"));
     }
+
+    @Step("UserChecks - проверка что ответ сервера соответствует успешному измененю данных")
+    public void checkChangeUserDataHttpOk(ValidatableResponse changeDataUser, UserData userData) {
+        changeDataUser.statusCode(HTTP_OK); // 200
+        changeDataUser
+                .body("success", equalTo(true))
+                .body("user.email", equalTo(userData.getEmail().toLowerCase()))
+                .body("user.name", equalTo(userData.getName()));
+    }
+
+    @Step("UserChecks - проверка что ответ сервера соответствует попытке изменить данные пользователя без авторизации")
+    public void checkChangeUserDataWithoutAuthHttpUnauth(ValidatableResponse changeDataUser) {
+            changeDataUser.statusCode(HTTP_UNAUTHORIZED); // 401
+            changeDataUser
+                .body("success", equalTo(false))
+                .body("message", equalTo( "You should be authorised"));
+    }
+
+    @Step("UserChecks - проверка что ответ сервера соответствует попытке входа с отсутствующими/неверными данными")
+    public void checkChangeUserEmailOccupiedHttpForb(ValidatableResponse logInResponse) {
+        logInResponse.statusCode(HTTP_FORBIDDEN); // 403
+        logInResponse
+                .body("success", equalTo(false))
+                .body("message", equalTo( "User with such email already exists"));
+    }
+
+    @Step("UserChecks - проверка что данные о пользователе изменились")
+    public void checkUserDataChanged(ValidatableResponse getDataUser, UserData userData) {
+        getDataUser.statusCode(HTTP_OK); // 200
+        getDataUser
+                .body("success", equalTo(true))
+                .body("user.email", equalTo(userData.getEmail().toLowerCase()))
+                .body("user.name", equalTo(userData.getName()));
+    }
+
+    @Step("UserChecks - проверка что данные о пользователе не изменились")
+    public void checkUserDataNoChanged(ValidatableResponse getDataUser, User user) {
+        getDataUser.statusCode(HTTP_OK); // 200
+        getDataUser
+                .body("success", equalTo(true))
+                .body("user.email", equalTo(user.getEmail().toLowerCase()))
+                .body("user.name", equalTo(user.getName()));
+    }
 }

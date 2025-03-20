@@ -62,6 +62,6 @@ public class User {
 
     @Step("User - Действие, устанавливаем пользователю новое имя")
     public void setNewName() {
-        this.name = this.name + "_"+ LocalDateTime.now();
+        this.name = this.name + "_" + LocalDateTime.now();
     }
 }

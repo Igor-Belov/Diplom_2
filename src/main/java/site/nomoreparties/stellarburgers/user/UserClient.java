@@ -39,19 +39,28 @@ public class UserClient extends Client {
     @Step("UserClient - действие, запрос на удаление пользователя")
     public ValidatableResponse deleteUser(String accessToken) {
         return spec()
-                .auth().oauth2(accessToken.replace("Bearer ", ""))
+                .auth().oauth2(accessToken)
                 .when()
                 .delete(USER_API_PATH + "/user")
                 .then().log().all();
     }
 
     @Step("UserClient - действие, запрос на изменение информации о пользователе")
-    public ValidatableResponse changeDataUser(String token, UserData userData) {
+    public ValidatableResponse changeDataUser(String AccessToken, UserData userData) {
         return spec()
-                .auth().oauth2(token)
+                .auth().oauth2(AccessToken)
                 .body(userData)
                 .when()
-                .post(USER_API_PATH + "/user")
+                .patch(USER_API_PATH + "/user")
+                .then().log().all();
+    }
+
+    @Step("UserClient - действие, получение информации о пользователе")
+    public ValidatableResponse getDataUser(String AccessToken) {
+        return spec()
+                .auth().oauth2(AccessToken)
+                .when()
+                .get(USER_API_PATH + "/user")
                 .then().log().all();
     }
 }

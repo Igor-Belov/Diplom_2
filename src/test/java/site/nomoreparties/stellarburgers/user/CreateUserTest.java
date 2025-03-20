@@ -34,7 +34,7 @@ public class CreateUserTest {
             userClient.deleteUser(accessTokenFirstUser);
         }
         if (accessTokenSecondUser != null) {
-            userClient.deleteUser("Второй" + accessTokenSecondUser);
+            userClient.deleteUser(accessTokenSecondUser);
         }
     }
 
@@ -42,7 +42,7 @@ public class CreateUserTest {
     @DisplayName("Тест - пользователя можно создать, все поля (email, пароль, имя) заполнены")
     public void CreateUserAllFieldsHttpCreated() {
         ValidatableResponse responseCreateUser = userClient.createUser(user);
-        accessTokenFirstUser = responseCreateUser.extract().path("accessToken");
+        accessTokenFirstUser = responseCreateUser.extract().path("accessToken").toString().replace("Bearer ", "");
         check.checkCreateUserOk(responseCreateUser, user);
     }
 
@@ -50,7 +50,7 @@ public class CreateUserTest {
     @DisplayName("Тест - создать пользователя, который уже зарегистрирован (email есть в бд)")
     public void CreateTwoIdenticalUserHttpForbidden() {
         ValidatableResponse responseCreateUser = userClient.createUser(user);
-        accessTokenFirstUser = responseCreateUser.extract().path("accessToken");
+        accessTokenFirstUser = responseCreateUser.extract().path("accessToken").toString().replace("Bearer ", "");
         user.setNewPassword();
         user.setNewName();
         ValidatableResponse responseCreateSameUser = userClient.createUser(user);
@@ -61,10 +61,10 @@ public class CreateUserTest {
     @DisplayName("Тест - создать пользователя, пароль и имя уже есть у другого пользователя, уникальный только email")
     public void CreateTwoDifferentEmailUserHttpForbidden() {
         ValidatableResponse responseCreateUser = userClient.createUser(user);
-        accessTokenFirstUser = responseCreateUser.extract().path("accessToken");
+        accessTokenFirstUser = responseCreateUser.extract().path("accessToken").toString().replace("Bearer ", "");
         user.setNewEmail();
         ValidatableResponse responseCreateSameUser = userClient.createUser(user);
-        accessTokenSecondUser = responseCreateSameUser.extract().path("accessToken");
+        accessTokenSecondUser = responseCreateSameUser.extract().path("accessToken").toString().replace("Bearer ", "");
         check.checkCreateUserOk(responseCreateSameUser, user);
     }
 

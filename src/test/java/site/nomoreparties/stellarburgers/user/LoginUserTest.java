@@ -20,7 +20,7 @@ public class LoginUserTest {
     private UserCredentials userCredentials;
     private ValidatableResponse responseCreateUser;
     private UserChecks check;
-    private String accessTokenFirstUser;
+    private String accessToken;
 
     @Before
     public void set() {
@@ -29,14 +29,14 @@ public class LoginUserTest {
         userClient = new UserClient();
         responseCreateUser = userClient.createUser(user);
         Assume.assumeTrue(responseCreateUser.extract().statusCode() == HTTP_OK); //200
-        accessTokenFirstUser = responseCreateUser.extract().path("accessToken");
+        accessToken = responseCreateUser.extract().path("accessToken").toString().replace("Bearer ", "");
         check = new UserChecks();
     }
 
     @After
     public void cleanUp() {
-        if (accessTokenFirstUser != null) {
-            userClient.deleteUser(accessTokenFirstUser);
+        if (accessToken != null) {
+            userClient.deleteUser(accessToken);
         }
     }
 
@@ -45,7 +45,7 @@ public class LoginUserTest {
     public void AuthorizationUserHttpOk() {
         ValidatableResponse logIn = userClient.logIn(userCredentials);
         check.checkLogInUserOk(logIn, user);
-        accessTokenFirstUser = logIn.extract().path("accessToken");
+        accessToken = logIn.extract().path("accessToken").toString().replace("Bearer ", "");
     }
 
     @Test
