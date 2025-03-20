@@ -156,23 +156,25 @@ public class ChangeDataUserTest {
         check.checkUserDataNoChanged(getDataUser, user);
     }
 
-    //Отсутвует документация. По факту 403 "Unexpected token ; in JSON at position 5"
+    //Отсутвует документация. По факту 403 jwt expired
     @Test
-    @DisplayName("Тест - не авторизированный пользователь (не валидный токен) не может изменить email")
-    public void NoAuthorizationBadTokenUserChangeEmailHttpForbidden() {
+    @DisplayName("Тест - не авторизированный пользователь (просроченный токен) не может изменить email")
+    public void NoAuthorizationOldTokenUserChangeEmailHttpForbidden() {
         userData.setNewEmail();
-        ValidatableResponse changeUserData = userClient.changeDataUser("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI7IjY3ZGM4ZThiOWVkMjgwMDAxYjVhYjE5YSIsImlhdCI6MTc0MjUwNzY1OSwiZXhwIjoxNzQyNTA4ODU5fQ.S_6PLUVqXw5cONzZzEt5ABpTBIrBOI9G85EkCCrxfS0", userData);
+        ValidatableResponse changeUserData = userClient.changeDataUser("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZGM5MGVkOWVkMjgwMDAxYjVhYjFlYSIsImlhdCI6MTc0MjUwODI2OSwiZXhwIjoxNzQyNTA5NDY5fQ.cVVY7PA41YZ-zwt1lTK1AN4sxBBo8dtGR64bl_Y58w8", userData);
         check.checkChangeUserDataWithoutAuthHttpUnauth(changeUserData);
     }
 
-    //Отсутвует документация. По факту 403 "Unexpected token ; in JSON at position 5"
+    //Отсутвует документация. По факту 403 jwt expired
     @Test
-    @DisplayName("Тест - не авторизированный пользователь (не валидный токен)  не может изменить name")
-    public void NoAuthorizationBadTokenUserChangeNameHttpForbidden() {
+    @DisplayName("Тест - не авторизированный пользователь (просроченный токен)  не может изменить name")
+    public void NoAuthorizationOldTokenUserChangeNameHttpForbidden() {
         userData.setNewName();
-        ValidatableResponse changeUserData = userClient.changeDataUser("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI7IjY3ZGM4ZThiOWVkMjgwMDAxYjVhYjE5YSIsImlhdCI6MTc0MjUwNzY1OSwiZXhwIjoxNzQyNTA4ODU5fQ.S_6PLUVqXw5cONzZzEt5ABpTBIrBOI9G85EkCCrxfS0", userData);
+        ValidatableResponse changeUserData = userClient.changeDataUser("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZGM5MGVkOWVkMjgwMDAxYjVhYjFlYSIsImlhdCI6MTc0MjUwODI2OSwiZXhwIjoxNzQyNTA5NDY5fQ.cVVY7PA41YZ-zwt1lTK1AN4sxBBo8dtGR64bl_Y58w8", userData);
         check.checkChangeUserDataWithoutAuthHttpUnauth(changeUserData);
     }
+    //Еще можно ломать токен руками в разных частях и получать разные сообщения. Например - 403 "Unexpected token ; in JSON at position 5" или 403 "invalid signature"
+
 }
 
 
