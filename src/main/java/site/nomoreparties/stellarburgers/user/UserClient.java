@@ -37,9 +37,9 @@ public class UserClient extends Client {
     }
 
     @Step("UserClient - действие, запрос на удаление пользователя")
-    public ValidatableResponse deleteUser(String token) {
+    public ValidatableResponse deleteUser(String accessToken) {
         return spec()
-                .auth().oauth2(token)
+                .auth().oauth2(accessToken.replace("Bearer ", ""))
                 .when()
                 .delete(USER_API_PATH + "/user")
                 .then().log().all();

@@ -87,6 +87,7 @@
                         <version>${aspectj.version}</version>
                         <scope>runtime</scope>
                     </dependency>
+
                 </dependencies>
             </plugin>
             <!-- подключение плагина allure-maven для вызова функций Allure с помощью Maven

@@ -17,6 +17,8 @@ public class CreateUserTest {
     private User user;
     private UserCredentials userCredentials;
     private UserChecks check;
+    private String accessTokenFirstUser;
+    private String accessTokenSecondUser;
 
     @Before
     public void setUp() {
@@ -28,17 +30,19 @@ public class CreateUserTest {
 
     @After
     public void cleanUp() {
-//        ValidatableResponse logIn = userClient.logIn(userCredentials);
-//        if (logIn.extract().statusCode() == HTTP_OK) {
-//            userId = check.checkLogInuser(logIn);
-//            ValidatableResponse deleteUser = userClient.deleteUser(token);
-//            check.checkDelete(deleteUser);//Да, в общих случаях проверки тут не уместны, но, например, если вы удаляете тестовые данные из базы данных, можно добавить проверку, что данные действительно удалены. Однако это должно быть исключением, а не правилом.
+        if (accessTokenFirstUser != null) {
+            userClient.deleteUser(accessTokenFirstUser);
+        }
+        if (accessTokenSecondUser != null) {
+            userClient.deleteUser("Второй" + accessTokenSecondUser);
+        }
     }
 
     @Test
     @DisplayName("Тест - пользователя можно создать, все поля (email, пароль, имя) заполнены")
     public void CreateUserAllFieldsHttpCreated() {
         ValidatableResponse responseCreateUser = userClient.createUser(user);
+        accessTokenFirstUser = responseCreateUser.extract().path("accessToken");
         check.checkCreateUserOk(responseCreateUser, user);
     }
 
@@ -46,6 +50,7 @@ public class CreateUserTest {
     @DisplayName("Тест - создать пользователя, который уже зарегистрирован (email есть в бд)")
     public void CreateTwoIdenticalUserHttpForbidden() {
         ValidatableResponse responseCreateUser = userClient.createUser(user);
+        accessTokenFirstUser = responseCreateUser.extract().path("accessToken");
         user.setNewPassword();
         user.setNewName();
         ValidatableResponse responseCreateSameUser = userClient.createUser(user);
@@ -56,8 +61,10 @@ public class CreateUserTest {
     @DisplayName("Тест - создать пользователя, пароль и имя уже есть у другого пользователя, уникальный только email")
     public void CreateTwoDifferentEmailUserHttpForbidden() {
         ValidatableResponse responseCreateUser = userClient.createUser(user);
+        accessTokenFirstUser = responseCreateUser.extract().path("accessToken");
         user.setNewEmail();
         ValidatableResponse responseCreateSameUser = userClient.createUser(user);
+        accessTokenSecondUser = responseCreateSameUser.extract().path("accessToken");
         check.checkCreateUserOk(responseCreateSameUser, user);
     }
 
