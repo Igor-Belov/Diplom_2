@@ -81,7 +81,7 @@ public class LoginUserTest {
     }
 
     @Test
-    @DisplayName("Тест - система вернёт ошибку, если изменим регистр на low;")
+    @DisplayName("Тест - система вернёт ошибку, если изменим регистр на low;")//проверка регистрозависимости
     public void AuthorizationUserLowerPasswordHttpNotFound() {
         userCredentials.setLowerPassword();
         ValidatableResponse logIn = userClient.logIn(userCredentials);
@@ -89,7 +89,7 @@ public class LoginUserTest {
     }
 
     @Test
-    @DisplayName("Тест - система вернёт ошибку, если изменим регистр на Upper;")
+    @DisplayName("Тест - система вернёт ошибку, если изменим регистр на Upper;")//он как будто лишний, но пусть будет. А то LowerCase загордится
     public void AuthorizationUserUpperPasswordHttpNotFound() {
         userCredentials.setLowerPassword();
         ValidatableResponse logIn = userClient.logIn(userCredentials);

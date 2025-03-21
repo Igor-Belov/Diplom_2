@@ -4,22 +4,12 @@ import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
 import site.nomoreparties.stellarburgers.Client;
 
-import java.util.Map;
 
 public class UserClient extends Client {
     private static final String USER_API_PATH = "/auth";
 
     @Step("UserClient - действие, заходим пользователем в личный кабинет")
     public ValidatableResponse logIn(UserCredentials creds) {
-        return spec()
-                .body(creds)
-                .when()
-                .post(USER_API_PATH + "/login")
-                .then().log().all();
-    }
-
-    @Step("UserClient - действие, выходим пользователем из личный кабинет")
-    public ValidatableResponse logOut(String creds) {
         return spec()
                 .body(creds)
                 .when()

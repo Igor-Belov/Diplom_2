@@ -23,7 +23,6 @@ public class ChangeDataUserTest {
         private ValidatableResponse responseCreateUser;
         private UserChecks check;
         private String accessToken;
-        private String refreshToken;
 
         @Before
         public void set() {
@@ -33,7 +32,7 @@ public class ChangeDataUserTest {
             userClient = new UserClient();
             responseCreateUser = userClient.createUser(user);
             Assume.assumeTrue(responseCreateUser.extract().statusCode() == HTTP_OK); //200
-            accessToken = responseCreateUser.extract().path("accessToken").toString().replace("Bearer ", "");;
+            accessToken = responseCreateUser.extract().path("accessToken").toString().replace("Bearer ", "");
             check = new UserChecks();
         }
 

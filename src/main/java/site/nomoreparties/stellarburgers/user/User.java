@@ -16,7 +16,7 @@ public class User {
     }
 
     @Step("User - Действие, создаем пользователя со случайными данными")
-    static User createRandomUser() {
+    public static User createRandomUser() {
         return new User(LocalDateTime.now() + "@autoUser.test", "P@ssword123", "AutoUser");
     }
 
