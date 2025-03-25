@@ -45,7 +45,7 @@ public class ChangeDataUserTest {
 
     @Test
     @DisplayName("Тест - авторизированный пользователь может поменять все поля (email и name);")
-    public void AuthorizationUserChangeEmailAndNameHttpOk() {
+    public void authorizationUserChangeEmailAndNameHttpOk() {
         ValidatableResponse logIn = userClient.logIn(userCredentials);
         accessToken = logIn.extract().path("accessToken").toString().replace("Bearer ", "");
         userData.setNewEmail();
@@ -58,7 +58,7 @@ public class ChangeDataUserTest {
 
     @Test
     @DisplayName("Тест - авторизированный пользователь отправил те же данные, что и были;")
-    public void AuthorizationUserNoChangeEmailAndNameHttpOk() {
+    public void authorizationUserNoChangeEmailAndNameHttpOk() {
         ValidatableResponse logIn = userClient.logIn(userCredentials);
         accessToken = logIn.extract().path("accessToken").toString().replace("Bearer ", "");
         ValidatableResponse changeUserData = userClient.changeDataUser(accessToken, userData);
@@ -69,7 +69,7 @@ public class ChangeDataUserTest {
 
     @Test
     @DisplayName("Тест - авторизированный пользователь не может сделать email пустым. Ответ не определен. Проверяем только БД;")
-    public void AuthorizationUserChangeEmailEmptyNoChangeDB() {
+    public void authorizationUserChangeEmailEmptyNoChangeDB() {
         ValidatableResponse logIn = userClient.logIn(userCredentials);
         accessToken = logIn.extract().path("accessToken").toString().replace("Bearer ", "");
         userData.setEmailToNull();
@@ -80,7 +80,7 @@ public class ChangeDataUserTest {
 
     @Test
     @DisplayName("Тест - авторизированный пользователь не может сделать name пустым. Ответ не определен. Проверяем только БД;")
-    public void AuthorizationUserChangeNameEmptyNoChangeDB() {
+    public void authorizationUserChangeNameEmptyNoChangeDB() {
         ValidatableResponse logIn = userClient.logIn(userCredentials);
         accessToken = logIn.extract().path("accessToken").toString().replace("Bearer ", "");
         userData.setNameToNull();
@@ -91,7 +91,7 @@ public class ChangeDataUserTest {
 
     @Test
     @DisplayName("Тест - авторизированный пользователь отправил занятый email;")
-    public void AuthorizationUserChangeEmailOccupiedHttpForbidden() {
+    public void authorizationUserChangeEmailOccupiedHttpForbidden() {
         User userFirstUser = user; //прихраним данные уже созданного в Before пользака.
         String accessTokenFirstUser = accessToken;
 
@@ -117,7 +117,7 @@ public class ChangeDataUserTest {
     //Тут возможно есть баг. Пользователь не авторизован, но у нас есть токен после регистрации. И он работает для изменения данных
     @Test
     @DisplayName("Тест - не авторизированный пользователь (токен после регистрации) не может изменить email")
-    public void NoAuthorizationUserChangeEmailHttpForbidden() {
+    public void noAuthorizationUserChangeEmailHttpForbidden() {
         userData.setNewEmail();
         ValidatableResponse changeUserData = userClient.changeDataUser(accessToken, userData);
         check.checkChangeUserDataWithoutAuthHttpUnauth(changeUserData);
@@ -127,7 +127,7 @@ public class ChangeDataUserTest {
 
     @Test
     @DisplayName("Тест - не авторизированный пользователь (токен после регистрации) не может изменить name")
-    public void NoAuthorizationUserChangeNameHttpForbidden() {
+    public void noAuthorizationUserChangeNameHttpForbidden() {
         userData.setNewName();
         ValidatableResponse changeUserData = userClient.changeDataUser(accessToken, userData);
         check.checkChangeUserDataWithoutAuthHttpUnauth(changeUserData);

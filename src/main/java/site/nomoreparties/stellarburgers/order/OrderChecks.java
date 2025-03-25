@@ -3,7 +3,6 @@ package site.nomoreparties.stellarburgers.order;
 
 import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
-import org.hamcrest.Matchers;
 
 import static java.net.HttpURLConnection.*;
 import static org.hamcrest.Matchers.*;
@@ -40,7 +39,7 @@ public class OrderChecks {
     }
 
     @Step("OrderChecks - проверка что ответ сервера соответствует запросу на получение списка заказов клиента, когда заказов не было")
-    public void checkEmptyListOrderHttpОк(ValidatableResponse getOrdersListUser) {
+    public void checkEmptyListOrderHttpOk(ValidatableResponse getOrdersListUser) {
         getOrdersListUser.statusCode(HTTP_OK); // 200
         getOrdersListUser
                 .body("success", equalTo(true))
@@ -50,7 +49,7 @@ public class OrderChecks {
     }
 
     @Step("OrderChecks - проверка что ответ сервера соответствует запросу на получение списка заказов клиента, когда заказы были")
-    public void checkNoEmptyListOrderHttpОк(ValidatableResponse getOrdersListUser, int countOrders) {
+    public void checkNoEmptyListOrderHttpOk(ValidatableResponse getOrdersListUser, int countOrders) {
         int maxNumberOfOrdersInResponse = 50;
         getOrdersListUser.statusCode(HTTP_OK); // 200
         getOrdersListUser

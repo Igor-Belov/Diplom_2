@@ -42,7 +42,7 @@ public class LoginUserTest {
 
     @Test
     @DisplayName("Тест - пользователь может авторизоваться;")
-    public void AuthorizationUserHttpOk() {
+    public void authorizationUserHttpOk() {
         ValidatableResponse logIn = userClient.logIn(userCredentials);
         check.checkLogInUserOk(logIn, user);
         accessToken = logIn.extract().path("accessToken").toString().replace("Bearer ", "");
@@ -50,7 +50,7 @@ public class LoginUserTest {
 
     @Test
     @DisplayName("Тест - пользователь не может авторизоваться без логина;")
-    public void AuthorizationUserWithoutLoginHttpBadRequest() {
+    public void authorizationUserWithoutLoginHttpBadRequest() {
         userCredentials.setLoginToNull();
         ValidatableResponse logIn = userClient.logIn(userCredentials);
         check.checkLogInUserBadRequest(logIn);
@@ -58,7 +58,7 @@ public class LoginUserTest {
 
     @Test
     @DisplayName("Тест - пользователь не может авторизоваться без пароля;")
-    public void AuthorizationUserWithoutPasswordHttpBadRequest() {
+    public void authorizationUserWithoutPasswordHttpBadRequest() {
         userCredentials.setPasswordToNull();
         ValidatableResponse logIn = userClient.logIn(userCredentials);
         check.checkLogInUserBadRequest(logIn);
@@ -66,7 +66,7 @@ public class LoginUserTest {
 
     @Test
     @DisplayName("Тест - система вернёт ошибку, если неправильно указать логин (или пользователя не существует);")
-    public void AuthorizationUserFailLoginHttpNotFound() {
+    public void authorizationUserFailLoginHttpNotFound() {
         userCredentials.setBreakLogin();
         ValidatableResponse logIn = userClient.logIn(userCredentials);
         check.checkLogInUserBadRequest(logIn);
@@ -74,7 +74,7 @@ public class LoginUserTest {
 
     @Test
     @DisplayName("Тест - система вернёт ошибку, если неправильно указать пароль;")
-    public void AuthorizationUserFailPasswordHttpNotFound() {
+    public void authorizationUserFailPasswordHttpNotFound() {
         userCredentials.setBreakPassword();
         ValidatableResponse logIn = userClient.logIn(userCredentials);
         check.checkLogInUserBadRequest(logIn);
@@ -82,7 +82,7 @@ public class LoginUserTest {
 
     @Test
     @DisplayName("Тест - система вернёт ошибку, если изменим регистр на low;")//проверка регистрозависимости
-    public void AuthorizationUserLowerPasswordHttpNotFound() {
+    public void authorizationUserLowerPasswordHttpNotFound() {
         userCredentials.setLowerPassword();
         ValidatableResponse logIn = userClient.logIn(userCredentials);
         check.checkLogInUserBadRequest(logIn);
@@ -90,7 +90,7 @@ public class LoginUserTest {
 
     @Test
     @DisplayName("Тест - система вернёт ошибку, если изменим регистр на Upper;")//он как будто лишний, но пусть будет. А то LowerCase загордится
-    public void AuthorizationUserUpperPasswordHttpNotFound() {
+    public void authorizationUserUpperPasswordHttpNotFound() {
         userCredentials.setLowerPassword();
         ValidatableResponse logIn = userClient.logIn(userCredentials);
         check.checkLogInUserBadRequest(logIn);

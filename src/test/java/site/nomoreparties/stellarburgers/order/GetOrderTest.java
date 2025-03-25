@@ -57,24 +57,24 @@ public class GetOrderTest {
     //Можно написать клевые тесты с проверкой соотвентствия отправленных и полученных заказов (все поля), и счетчики.  но уже нет времени.
     @Test
     @DisplayName("Тест - один заказ может быть отображен;")
-    public void AuthorizationUserGetOneOrdersListHttpOk() {
+    public void authorizationUserGetOneOrdersListHttpOk() {
         ingredients = List.of(Product.BUN.getHash(), Product.MAIN.getHash(), Product.SAUCE.getHash());
         order = Order.createOrder(ingredients, accessToken);
         orderClient.CreateOrderResponse(order);
         ValidatableResponse getOrdersUserResponse = orderClient.GetOrdersUserResponse(accessToken);
-        check.checkNoEmptyListOrderHttpОк(getOrdersUserResponse, 1);
+        check.checkNoEmptyListOrderHttpOk(getOrdersUserResponse, 1);
     }
 
     @Test
     @DisplayName("Тест - ноль заказов может быть отображен;")
-    public void AuthorizationUserGetEmptyOrdersListHttpOk() {
+    public void authorizationUserGetEmptyOrdersListHttpOk() {
         ValidatableResponse getOrdersUserResponse = orderClient.GetOrdersUserResponse(accessToken);
-        check.checkEmptyListOrderHttpОк(getOrdersUserResponse);
+        check.checkEmptyListOrderHttpOk(getOrdersUserResponse);
     }
 
     @Test
     @DisplayName("Тест - два заказа может быть отображено;")
-    public void AuthorizationUserGetTwoOrdersListHttpOk() {
+    public void authorizationUserGetTwoOrdersListHttpOk() {
         ingredients = List.of(Product.BUN.getHash(), Product.MAIN.getHash(), Product.SAUCE.getHash());
         order = Order.createOrder(ingredients, accessToken);
         int countOrders = 2;
@@ -82,13 +82,13 @@ public class GetOrderTest {
             orderClient.CreateOrderResponse(order);
         }
         ValidatableResponse getOrdersUserResponse = orderClient.GetOrdersUserResponse(accessToken);
-        check.checkNoEmptyListOrderHttpОк(getOrdersUserResponse, countOrders);
+        check.checkNoEmptyListOrderHttpOk(getOrdersUserResponse, countOrders);
     }
 
     //Долгий тест!
     @Test
     @DisplayName("Тест - 50 заказов может быть отображено. Дополнен- при 51, отображается 50;")
-    public void AuthorizationUserGet50OrdersListHttpOk() {
+    public void authorizationUserGet50OrdersListHttpOk() {
         ingredients = List.of(Product.BUN.getHash(), Product.MAIN.getHash(), Product.SAUCE.getHash());
         order = Order.createOrder(ingredients, accessToken);
         int countOrders = 50;
@@ -96,11 +96,11 @@ public class GetOrderTest {
             orderClient.CreateOrderResponse(order);
         }
         ValidatableResponse getOrdersUserResponse = orderClient.GetOrdersUserResponse(accessToken);
-        check.checkNoEmptyListOrderHttpОк(getOrdersUserResponse, countOrders);
+        check.checkNoEmptyListOrderHttpOk(getOrdersUserResponse, countOrders);
         //для ускорения прогона этот тест совмещен с тестом на 50 заказов. См тест ниже.
         //Тут баг. Система вернула 51 заказ
         orderClient.CreateOrderResponse(order);
-        check.checkNoEmptyListOrderHttpОк(getOrdersUserResponse, countOrders + 1);
+        check.checkNoEmptyListOrderHttpOk(getOrdersUserResponse, countOrders + 1);
     }
 
     //для ускорения прогона этот тест совмещен с тестом на 50 заказов
@@ -121,7 +121,7 @@ public class GetOrderTest {
     //баг. Ожидаю 401 "You should be authorised", а не 403 "jwt expired"
     @Test
     @DisplayName("Тест - Не авторизированный пользователь (просрочен токет). Заказы не могут быть отображены;")
-    public void OldAuthorizationUserGetOrdersListHttpUnauth() {
+    public void oldAuthorizationUserGetOrdersListHttpUnauth() {
         String oldToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZGM5MGVkOWVkMjgwMDAxYjVhYjFlYSIsImlhdCI6MTc0MjUwODI2OSwiZXhwIjoxNzQyNTA5NDY5fQ.cVVY7PA41YZ-zwt1lTK1AN4sxBBo8dtGR64bl_Y58w8";
         ValidatableResponse getOrdersUserResponse = orderClient.GetOrdersUserResponse(oldToken);
         check.checkListOrderNoAuthUserHttpUnauth(getOrdersUserResponse);
@@ -129,7 +129,7 @@ public class GetOrderTest {
 
     @Test
     @DisplayName("Тест - Не авторизированный пользователь (пустой токет). Заказы не могут быть отображены;")
-    public void EmptyAuthorizationUserGetOrdersListHttpUnauth() {
+    public void emptyAuthorizationUserGetOrdersListHttpUnauth() {
         String emptyToken = new String();
         ValidatableResponse getOrdersUserResponse = orderClient.GetOrdersUserResponse(emptyToken);
         check.checkListOrderNoAuthUserHttpUnauth(getOrdersUserResponse);

@@ -57,7 +57,7 @@ public class CreateOrderTest {
 
     @Test
     @DisplayName("Тест - заказ может быть создан;")
-    public void AuthorizationUserCreateOrderHttpOk() {
+    public void authorizationUserCreateOrderHttpOk() {
         ingredients = List.of(Product.BUN.getHash(), Product.MAIN.getHash(), Product.SAUCE.getHash());
         order = Order.createOrder(ingredients, accessToken);
         ValidatableResponse createOrderResponse  = orderClient.CreateOrderResponse(order);
@@ -66,7 +66,7 @@ public class CreateOrderTest {
 
     @Test
     @DisplayName("Тест - ошибка при невалидном хэше продукта;")
-    public void AuthorizationUserCreateOrderNoValidHashHttpError() {
+    public void authorizationUserCreateOrderNoValidHashHttpError() {
         ingredients = List.of(Product.BUN.getHash(), Product.MAIN.getHash(), Product.NO_VALID_HASH_FOOD.getHash());
         order = Order.createOrder(ingredients, accessToken);
         ValidatableResponse createOrderResponse  = orderClient.CreateOrderResponse(order);
@@ -76,7 +76,7 @@ public class CreateOrderTest {
     //Не описана реакция системы на неизвестный хэш. По факту 200 и игнорирование неизвестного продукта. Это явно баг. Ожидаю 500 или отдельную обработку (Например 400 и "One or more ids provided are incorrect")
     @Test
     @DisplayName("Тест - ошибка при неизвестном хэше продукта;")
-    public void AuthorizationUserCreateOrderUnknownHashHttpError() {
+    public void authorizationUserCreateOrderUnknownHashHttpError() {
         ingredients = List.of(Product.BUN.getHash(), Product.MAIN.getHash(), Product.UNKNOWN_HASH_FOOD.getHash());
         order = Order.createOrder(ingredients, accessToken);
         ValidatableResponse createOrderResponse  = orderClient.CreateOrderResponse(order);
@@ -86,7 +86,7 @@ public class CreateOrderTest {
     //не уверен, что это не баг. Бургер только из хлеба.
     @Test
     @DisplayName("Тест - бургер только из хлеба;")
-    public void AuthorizationUserCreateOrderOnlyBreadHttpОк() {
+    public void authorizationUserCreateOrderOnlyBreadHttpOk() {
         ingredients = List.of(Product.BUN.getHash());
         order = Order.createOrder(ingredients, accessToken);
         ValidatableResponse createOrderResponse  = orderClient.CreateOrderResponse(order);
@@ -96,17 +96,17 @@ public class CreateOrderTest {
     //не уверен, что это не баг. Бургер только из соуса.
     @Test
     @DisplayName("Тест - бургер только из соуса;")
-    public void AuthorizationUserCreateOrderOnlySauceHttpОк() {
+    public void authorizationUserCreateOrderOnlySauceHttpOk() {
         ingredients = List.of(Product.SAUCE.getHash());
         order = Order.createOrder(ingredients, accessToken);
         ValidatableResponse createOrderResponse  = orderClient.CreateOrderResponse(order);
         check.checkCreateOrderHttpOk(createOrderResponse);
     }
 
-    //не уверен, что это не баг. Бургер только из мяса.
+    //Не уверен, что это не баг. Бургер только из мяса.
     @Test
     @DisplayName("Тест - бургер только из мяса;")
-    public void AuthorizationUserCreateOrderOnlyMainHttpОк() {
+    public void authorizationUserCreateOrderOnlyMainHttpOk() {
         ingredients = List.of(Product.MAIN.getHash());
         order = Order.createOrder(ingredients, accessToken);
         ValidatableResponse createOrderResponse  = orderClient.CreateOrderResponse(order);
@@ -115,18 +115,18 @@ public class CreateOrderTest {
 
     @Test
     @DisplayName("Тест - бургер только из мяса;")
-    public void AuthorizationUserCreateOrderEmptyHttpError() {
+    public void authorizationUserCreateOrderEmptyHttpError() {
         ingredients = List.of();
         order = Order.createOrder(ingredients, accessToken);
         ValidatableResponse createOrderResponse  = orderClient.CreateOrderResponse(order);
         check.checkCreateOrderEmptyListIngridientsHttpBad(createOrderResponse);
     }
 
-    //Интересная реакция. Ожидал ответ как у AuthorizationUserCreateOrderUnknownHashHttpError, так как AuthorizationUserCreateOrderUnknownHashHttpError просто игнорит такие продукты. Очевидно что где то баг.
+    //Интересная реакция. Ожидал ответ как у authorizationUserCreateOrderUnknownHashHttpError, так как authorizationUserCreateOrderUnknownHashHttpError просто игнорит такие продукты. Очевидно что где то баг.
     //По факту 400 "One or more ids provided are incorrect"
     @Test
     @DisplayName("Тест - бургер только из неизвестного ингридиента;")
-    public void AuthorizationUserCreateOrderOnlyUnknownHashHttpError() {
+    public void authorizationUserCreateOrderOnlyUnknownHashHttpError() {
         ingredients = List.of(Product.UNKNOWN_HASH_FOOD.getHash());
         order = Order.createOrder(ingredients, accessToken);
         ValidatableResponse createOrderResponse  = orderClient.CreateOrderResponse(order);
@@ -136,7 +136,7 @@ public class CreateOrderTest {
     //По факту 400 "One or more ids provided are incorrect". Возможно баг
     @Test
     @DisplayName("Тест - ошибка при невалидном хэше продукта. Других продуктов нет;")
-    public void AuthorizationUserCreateOrderOnlyOneNoValidHashHttpError() {
+    public void authorizationUserCreateOrderOnlyOneNoValidHashHttpError() {
         ingredients = List.of(Product.NO_VALID_HASH_FOOD.getHash());
         order = Order.createOrder(ingredients, accessToken);
         ValidatableResponse createOrderResponse  = orderClient.CreateOrderResponse(order);
@@ -146,7 +146,7 @@ public class CreateOrderTest {
     //баг
     @Test
     @DisplayName("Тест - Пользователь не авторизован (нет токена). Заказ не может быть создан;")
-    public void NoAuthorizationUserCreateOrderHttpNoAuth() {
+    public void noAuthorizationUserCreateOrderHttpNoAuth() {
         ingredients = List.of(Product.BUN.getHash(), Product.MAIN.getHash(), Product.SAUCE.getHash());
         order = Order.createOrder(ingredients, new String());
         ValidatableResponse createOrderResponse  = orderClient.CreateOrderResponse(order);
@@ -155,7 +155,7 @@ public class CreateOrderTest {
 
     @Test
     @DisplayName("Тест - Пользователь не авторизован (просрочен токен). Заказ не может быть создан;")
-    public void OldTokenAuthorizationUserCreateOrderHttpNoAuth() {
+    public void oldTokenAuthorizationUserCreateOrderHttpNoAuth() {
         ingredients = List.of(Product.BUN.getHash(), Product.MAIN.getHash(), Product.SAUCE.getHash());
         String oldToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZGM5MGVkOWVkMjgwMDAxYjVhYjFlYSIsImlhdCI6MTc0MjUwODI2OSwiZXhwIjoxNzQyNTA5NDY5fQ.cVVY7PA41YZ-zwt1lTK1AN4sxBBo8dtGR64bl_Y58w8";
         order = Order.createOrder(ingredients, oldToken);
@@ -163,5 +163,5 @@ public class CreateOrderTest {
         check.checkCreateOrderNoAuthHttp(createOrderResponse);
     }
 
-    //еще тесты на дубли ингридиентов и так далее. Но не в рамках учебного проекта)))
+    //Eще тесты на дубли ингридиентов и так далее. Но не в рамках учебного проекта)))
 }

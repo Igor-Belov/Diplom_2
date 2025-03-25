@@ -40,7 +40,7 @@ public class CreateUserTest {
 
     @Test
     @DisplayName("Тест - пользователя можно создать, все поля (email, пароль, имя) заполнены")
-    public void CreateUserAllFieldsHttpCreated() {
+    public void createUserAllFieldsHttpCreated() {
         ValidatableResponse responseCreateUser = userClient.createUser(user);
         accessTokenFirstUser = responseCreateUser.extract().path("accessToken").toString().replace("Bearer ", "");
         check.checkCreateUserOk(responseCreateUser, user);
@@ -48,7 +48,7 @@ public class CreateUserTest {
 
     @Test
     @DisplayName("Тест - создать пользователя, который уже зарегистрирован (email есть в бд)")
-    public void CreateTwoIdenticalUserHttpForbidden() {
+    public void createTwoIdenticalUserHttpForbidden() {
         ValidatableResponse responseCreateUser = userClient.createUser(user);
         accessTokenFirstUser = responseCreateUser.extract().path("accessToken").toString().replace("Bearer ", "");
         user.setNewPassword();
@@ -59,7 +59,7 @@ public class CreateUserTest {
 
     @Test
     @DisplayName("Тест - создать пользователя, пароль и имя уже есть у другого пользователя, уникальный только email")
-    public void CreateTwoDifferentEmailUserHttpForbidden() {
+    public void createTwoDifferentEmailUserHttpForbidden() {
         ValidatableResponse responseCreateUser = userClient.createUser(user);
         accessTokenFirstUser = responseCreateUser.extract().path("accessToken").toString().replace("Bearer ", "");
         user.setNewEmail();
@@ -71,7 +71,7 @@ public class CreateUserTest {
     //тесты где не хватает одного из обязательных полей при создании
     @Test
     @DisplayName("Тест - пользователя нельзя создать, не заполнив обязательное поле email")
-    public void CreateUserNullEmailHttpForbidden() {
+    public void createUserNullEmailHttpForbidden() {
         user.setEmailToNull();
         ValidatableResponse responseCreateUser = userClient.createUser(user);
         check.checkCreateUserBadRequest(responseCreateUser);
@@ -79,7 +79,7 @@ public class CreateUserTest {
 
     @Test
     @DisplayName("Тест - пользователя нельзя создать, не заполнив обязательное поле password")
-    public void CreateUserNullPasswordHttpForbidden() {
+    public void createUserNullPasswordHttpForbidden() {
         user.setPasswordToNull();
         ValidatableResponse responseCreateUser = userClient.createUser(user);
         check.checkCreateUserBadRequest(responseCreateUser);
@@ -87,7 +87,7 @@ public class CreateUserTest {
 
     @Test
     @DisplayName("Тест - пользователя нельзя создать, не заполнив обязательное поле name")
-    public void CreateUserNullNameHttpForbidden() {
+    public void createUserNullNameHttpForbidden() {
         user.setNameToNull();
         ValidatableResponse responseCreateUser = userClient.createUser(user);
         check.checkCreateUserBadRequest(responseCreateUser);
