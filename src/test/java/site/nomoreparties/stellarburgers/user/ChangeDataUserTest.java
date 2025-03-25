@@ -57,6 +57,30 @@ public class ChangeDataUserTest {
     }
 
     @Test
+    @DisplayName("Тест - авторизированный пользователь может поменять только поле name;")
+    public void authorizationUserChangeNameHttpOk() {
+        ValidatableResponse logIn = userClient.logIn(userCredentials);
+        accessToken = logIn.extract().path("accessToken").toString().replace("Bearer ", "");
+        userData.setNewName();
+        ValidatableResponse changeUserData = userClient.changeDataUser(accessToken, userData);
+        check.checkChangeUserDataHttpOk(changeUserData, userData);
+        ValidatableResponse getDataUser = userClient.getDataUser(accessToken);
+        check.checkUserDataChanged(getDataUser, userData);
+    }
+
+    @Test
+    @DisplayName("Тест - авторизированный пользователь может поменять только поле email;")
+    public void authorizationUserChangeEmailHttpOk() {
+        ValidatableResponse logIn = userClient.logIn(userCredentials);
+        accessToken = logIn.extract().path("accessToken").toString().replace("Bearer ", "");
+        userData.setNewName();
+        ValidatableResponse changeUserData = userClient.changeDataUser(accessToken, userData);
+        check.checkChangeUserDataHttpOk(changeUserData, userData);
+        ValidatableResponse getDataUser = userClient.getDataUser(accessToken);
+        check.checkUserDataChanged(getDataUser, userData);
+    }
+
+    @Test
     @DisplayName("Тест - авторизированный пользователь отправил те же данные, что и были;")
     public void authorizationUserNoChangeEmailAndNameHttpOk() {
         ValidatableResponse logIn = userClient.logIn(userCredentials);
